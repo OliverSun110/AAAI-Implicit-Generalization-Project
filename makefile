@@ -13,14 +13,14 @@ translate:
 
 train:
 	python3 preprocess.py -train_src data/wnt15de/train.en -train_tgt data/wnt15de/train.de -valid_src data/wnt15de/newstest2015.en -valid_tgt data/wnt15de/newstest2015.de -save_data data/datade -src_vocab_size 50000 -tgt_vocab_size 50000 ; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 1 -optim sgd -report_every 5000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 3 -optim sgd -report_every 5000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 5 -optim sgd -report_every 5000 -train_steps 100000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 10 -optim sgd -report_every 5000 -train_steps 100000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 20 -optim sgd -report_every 5000 -train_steps 100000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 25 -optim sgd -report_every 5000 -train_steps 100000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 30 -optim sgd -report_every 5000 -train_steps 100000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 35 -optim sgd -report_every 5000 -train_steps 100000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 50 -optim sgd -report_every 5000 -train_steps 100000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 100 -optim sgd -report_every 5000 -train_steps 100000; \
-	python3 train.py -data data/datade -save_model dedata-model -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -batch_size 200 -optim sgd -report_every 5000 -train_steps 100000; \
+	python3 train.py -data data/datade -save_model dedata-model_1 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 1 -optim sgd -report_every 5000; \
+	python3 train.py -data data/datade -save_model dedata-model_5-gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 3 -optim sgd -report_every 5000; \
+	python3 train.py -data data/datade -save_model dedata-model_10 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 5 -optim sgd -report_every 5000 -train_steps 100000; \
+	python3 train.py -data data/datade -save_model dedata-model_15 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 10 -optim sgd -report_every 5000 -train_steps 100000; \
+	python3 train.py -data data/datade -save_model dedata-model_20 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 20 -optim sgd -report_every 5000 -train_steps 100000; \
+	python3 train.py -data data/datade -save_model dedata-model_25 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 25 -optim sgd -report_every 5000 -train_steps 100000; \
+	python3 train.py -data data/datade -save_model dedata-model_30 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 30 -optim sgd -report_every 5000 -train_steps 100000; \
+	python3 train.py -data data/datade -save_model dedata-model_35 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 35 -optim sgd -report_every 5000 -train_steps 100000; \
+	python3 train.py -data data/datade -save_model dedata-model_50 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 50 -optim sgd -report_every 5000 -train_steps 100000; \
+	python3 train.py -data data/datade -save_model dedata-model_100 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 100 -optim sgd -report_every 5000 -train_steps 100000; \
+	python3 train.py -data data/datade -save_model dedata-model_200 -gpuid 0 -rnn_size 100 -layers 1 -optim sgd -learning_rate 0.001 -learning_rate_decay 0 -batch_size 200 -optim sgd -report_every 5000 -train_steps 100000; \
