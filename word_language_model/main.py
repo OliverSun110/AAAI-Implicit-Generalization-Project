@@ -46,6 +46,10 @@ parser.add_argument('--save', type=str, default='model.pt',
                     help='path to save the final model')
 parser.add_argument('--onnx-export', type=str, default='',
                     help='path to export the final model in onnx format')
+parser.add_argument('--upperweight', type=float, default=0.1,
+                    help='initial weight upper bound')
+parser.add_argument('--lowerweight', type=float, default=-0.1,
+                    help='iniital weight lower bound')
 args = parser.parse_args()
 
 # Set the random seed manually for reproducibility.
@@ -75,6 +79,7 @@ corpus = data.Corpus(args.data)
 # batch processing.
 
 def batchify(data, bsz):
+    #random.shuffle(data)
     # Work out how cleanly we can divide the dataset into bsz parts.
     nbatch = data.size(0) // bsz
     # Trim off any extra elements that wouldn't cleanly fit (remainders).
@@ -93,7 +98,7 @@ test_data = batchify(corpus.test, eval_batch_size)
 ###############################################################################
 
 ntokens = len(corpus.dictionary)
-model = model.RNNModel(args.model, ntokens, args.emsize, args.nhid, args.nlayers, args.dropout, args.tied).to(device)
+model = model.RNNModel(args.model, ntokens, args.emsize, args.nhid, args.nlayers, args.dropout, args.tied, upperweight=args.upperweight, lowerweight=args.lowerweight).to(device)
 
 criterion = nn.CrossEntropyLoss()
 
@@ -155,6 +160,8 @@ def train():
     start_time = time.time()
     ntokens = len(corpus.dictionary)
     hidden = model.init_hidden(args.batch_size)
+    train_loss=0
+    train_ppl=0
     for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):
         j = random.randint(0,len(train_data)-2)
         data, targets = get_batch(train_data, j)
@@ -181,7 +188,10 @@ def train():
                 epoch, batch, len(train_data) // args.bptt, lr,
                 elapsed * 1000 / args.log_interval, cur_loss, math.exp(cur_loss)))
             total_loss = 0
+            train_loss = cur_loss
+            train_ppl = math.exp(cur_loss)
             start_time = time.time()
+    return (train_ppl, train_loss)
 
 
 def export_onnx(path, batch_size, seq_len):
@@ -196,26 +206,75 @@ def export_onnx(path, batch_size, seq_len):
 # Loop over epochs.
 lr = args.lr
 best_val_loss = None
-
+#print("batch size: ", args.batch_size)
 # At any point you can hit Ctrl + C to break out of training early.
 try:
+    with open('output_batch' + str(args.batch_size) + '.txt','a+') as f:
+        f.write('\n' + '+' * 89 + '\n' )
+        f.write('Weight initialization range ('+str(args.upperweight) + ', ' + str(args.lowerweight) + ') \n')
+        f.write('Random Seed: ' + str(args.seed)+'\n')
+    count = 0
+    early_stop = 0
     for epoch in range(1, args.epochs+1):
         epoch_start_time = time.time()
-        train()
+        #shuffle each epoch 
+        #traindata = batchify(corpus.train, args.batch_size)
+        (train_ppl, train_loss) = train()
         val_loss = evaluate(val_data)
         print('-' * 89)
         print('| end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | '
                 'valid ppl {:8.2f}'.format(epoch, (time.time() - epoch_start_time),
                                            val_loss, math.exp(val_loss)))
         print('-' * 89)
+        '''
+        with open('output_batch' + str(args.batch_size)  + '.txt','w+') as file:
+            file.write('-' * 89 + '\n')
+            file.write('| end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | '
+                             'valid ppl {:8.2f}'.format(epoch, (time.time() - epoch_start_time),
+                                                        val_loss, math.exp(val_loss)))
+            file.write('\n' + '-' * 89 + '-' + '\n')
+        '''
         # Save the model if the validation loss is the best we've seen so far.
         if not best_val_loss or val_loss < best_val_loss:
             with open(args.save, 'wb') as f:
                 torch.save(model, f)
             best_val_loss = val_loss
+            count = 0
         else:
+            print('Valid Loss stop decreasing the ' + str(count) + 'time in epoch ' + str(epoch))
+            if early_stop == 1:
+                if count < 4:
+                    lr /= 4.0
+                    count += 1
+                    continue
+                break
             # Anneal the learning rate if no improvement has been seen in the validation dataset.
+            print("Early stopping in epoch " + str(epoch))
+            # train
+            with open('output_batch' + str(args.batch_size)  + '.txt','a+') as file:
+                file.write('=' * 89 + '\n')
+                file.write('Early Train: | end of epoch' + str(epoch) + '| train ppl ' + str(train_ppl) + '| train loss ' + str(train_loss) + '.' )
+                file.write('\n' + '=' * 89 + '\n')            
+            # valid
+            with open('output_batch' + str(args.batch_size)  + '.txt','a+') as file:
+                file.write('=' * 89 + '\n')
+                file.write('Early Valid: | end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | '
+                           'valid ppl {:8.2f}'.format(epoch, (time.time() - epoch_start_time),val_loss, math.exp(val_loss)))
+                file.write('\n' + '=' * 89 + '\n')
+            # Run on test data.
+            test_loss = evaluate(test_data)
+            print('=' * 89)
+            print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
+                test_loss, math.exp(test_loss)))
+            print('=' * 89)
+            with open('output_batch' + str(args.batch_size) + '.txt','a+') as f:
+                       f.write('=' * 89 + '\n')
+                       f.write('Early Test: | End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
+                           test_loss, math.exp(test_loss)))
+                       f.write('\n' + '=' * 89 + '\n')
             lr /= 4.0
+            early_stop = 1
+                           
 except KeyboardInterrupt:
     print('-' * 89)
     print('Exiting from training early')
@@ -226,13 +285,33 @@ with open(args.save, 'rb') as f:
     # after load the rnn params are not a continuous chunk of memory
     # this makes them a continuous chunk, and will speed up forward pass
     model.rnn.flatten_parameters()
-
+'''
+# train
+train_loss = evaluate(train_data)
+with open('output_batch' + str(args.batch_size)  + '.txt','a+') as file:
+    file.write('=' * 89 + '\n')
+    file.write('Final Train | end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | '
+               'train ppl {:8.2f}'.format(epoch, (time.time() - epoch_start_time),train_loss, math.exp(train_loss)))
+    file.write('\n' + '=' * 89 + '\n')
+'''
+# valid 
+val_loss = evaluate(val_data)
+with open('output_batch' + str(args.batch_size)  + '.txt','a+') as file:
+    file.write('=' * 89 + '\n')
+    file.write('Final Valid | end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | '
+               'valid ppl {:8.2f}'.format(epoch, (time.time() - epoch_start_time),val_loss, math.exp(val_loss)))
+    file.write('\n' + '=' * 89 + '\n')
 # Run on test data.
 test_loss = evaluate(test_data)
 print('=' * 89)
 print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
     test_loss, math.exp(test_loss)))
 print('=' * 89)
+with open('output_batch' + str(args.batch_size)  +  '.txt','a+') as f:
+    f.write('=' * 89 + '\n')
+    f.write('Final Test: | End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
+        test_loss, math.exp(test_loss)))
+    f.write('\n' + '=' * 89 + '\n')
 
 if len(args.onnx_export) > 0:
     # Export the model in ONNX format.
