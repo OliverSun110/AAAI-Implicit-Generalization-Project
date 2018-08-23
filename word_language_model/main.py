@@ -243,11 +243,16 @@ try:
         else:
             print('Valid Loss stop decreasing the ' + str(count) + 'time in epoch ' + str(epoch))
             if early_stop == 1:
-                if count < 4:
-                    lr /= 4.0
+                if count < 5:
+                    if count > 0:
+                        lr /= 4.0
                     count += 1
                     continue
                 break
+            if early_stop == 0:
+                if count < 3:
+                    count += 1
+                    continue
             # Anneal the learning rate if no improvement has been seen in the validation dataset.
             print("Early stopping in epoch " + str(epoch))
             # train
@@ -274,6 +279,7 @@ try:
                        f.write('\n' + '=' * 89 + '\n')
             lr /= 4.0
             early_stop = 1
+            count = 0
                            
 except KeyboardInterrupt:
     print('-' * 89)

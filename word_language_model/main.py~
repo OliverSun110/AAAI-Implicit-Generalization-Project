@@ -214,6 +214,7 @@ try:
         f.write('Weight initialization range ('+str(args.upperweight) + ', ' + str(args.lowerweight) + ') \n')
         f.write('Random Seed: ' + str(args.seed)+'\n')
     count = 0
+    early_stop = 0
     for epoch in range(1, args.epochs+1):
         epoch_start_time = time.time()
         #shuffle each epoch 
@@ -241,9 +242,17 @@ try:
             count = 0
         else:
             print('Valid Loss stop decreasing the ' + str(count) + 'time in epoch ' + str(epoch))
-            if count < 3:
-                count += 1
-                continue
+            if early_stop == 1:
+                if count < 5:
+                    if count > 1:
+                        lr /= 4.0
+                    count += 1
+                    continue
+                break
+            if early_stop == 0:
+                if count < 1:
+                    count += 1
+                    continue
             # Anneal the learning rate if no improvement has been seen in the validation dataset.
             print("Early stopping in epoch " + str(epoch))
             # train
@@ -268,7 +277,9 @@ try:
                        f.write('Early Test: | End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
                            test_loss, math.exp(test_loss)))
                        f.write('\n' + '=' * 89 + '\n')
-            break
+            lr /= 4.0
+            early_stop = 1
+            count = 0
                            
 except KeyboardInterrupt:
     print('-' * 89)
