@@ -15,30 +15,30 @@ train:
 	done 
 
 run: 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 50 --lr 5 --log-interval 2000 --batch_size 1 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 50 --lr 5 --log-interval 2000 --batch_size 1 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 200 --lr 5 --log-interval 2000 --batch_size 5 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 200 --lr 5 --log-interval 2000 --batch_size 5 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 400 --lr 5 --log-interval 2000 --batch_size 10 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 400 --lr 5 --log-interval 2000 --batch_size 10 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 800 --lr 5 --log-interval 2000 --batch_size 20 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 800 --lr 5 --log-interval 2000 --batch_size 20 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 1200 --lr 5 --log-interval 2000 --batch_size 30 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 1200 --lr 5 --log-interval 2000 --batch_size 30 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 2000 --lr 5 --log-interval 2000 --batch_size 50 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 2000 --lr 5 --log-interval 2000 --batch_size 50 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 1600 --lr 5 --log-interval 2000 --batch_size 40 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 1600 --lr 5 --log-interval 2000 --batch_size 40 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 1111 ; \
 	
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 50 --lr 5 --log-interval 2000 --batch_size 1 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 50 --lr 5 --log-interval 2000 --batch_size 1 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 200 --lr 5 --log-interval 2000 --batch_size 5 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 200 --lr 5 --log-interval 2000 --batch_size 5 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 400 --lr 5 --log-interval 2000 --batch_size 10 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 400 --lr 5 --log-interval 2000 --batch_size 10 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 800 --lr 5 --log-interval 2000 --batch_size 20 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 800 --lr 5 --log-interval 2000 --batch_size 20 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 1200 --lr 5 --log-interval 2000 --batch_size 30 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 1200 --lr 5 --log-interval 2000 --batch_size 30 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 2000 --lr 5 --log-interval 2000 --batch_size 50 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 2000 --lr 5 --log-interval 2000 --batch_size 50 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
 
-	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0.5 --epochs 1600 --lr 5 --log-interval 2000 --batch_size 40 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
+	CUDA_VISIBLE_DEVICES=0 python2 main.py --cuda --emsize 650 --nhid 650 --dropout 0 --epochs 1600 --lr 5 --log-interval 2000 --batch_size 40 --data './data/ptb' --upperweight 0.1 --lowerweight 0.03 --seed 2222 ; \
